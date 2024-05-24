@@ -1,0 +1,18 @@
+global:
+  resolve_timeout: 5m
+route:
+  group_by: ['instance']
+  group_wait: 30s
+  group_interval: 60s
+  repeat_interval: 5m
+  receiver: 'web.hook.prometheusalert'
+receivers:
+  - name: 'web.hook.prometheusalert'
+    webhook_configs:
+      - url: 'http://localhost:8080/prometheusalert?type=fs&tpl=prometheus-fs&fsurl=https://open.feishu.cn/open-apis/bot/v2/hook/905d0e16-8b1f-4475-9149-b3423859dfb2'
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']
