@@ -54,22 +54,22 @@ services:
 #    networks:
 #      - monitor-net
 
-  prometheus-alert:
-    image: feiyu563/prometheus-alert:latest
-    container_name: prometheus-alert
-    restart: always
-    ports:
-      - "9094:8080"
-    expose:
-      - 9094
-    networks:
-      - monitor-net
-    volumes:
-      - ./prometheus-alert/db:/app/db
-    environment:
-      - PA_LOGIN_USER=admin
-      - PA_LOGIN_PASSWORD=admin
-      - PA_TITLE=prometheusAlert
-      - PA_OPEN_FEISHU=1
-      - PA_OPEN_DINGDING=0
-      - PA_OPEN_WEIXIN=0
+#  prometheus-alert:
+#    image: feiyu563/prometheus-alert:latest
+#    container_name: prometheus-alert
+#    restart: always
+#    ports:
+#      - "9094:8080"
+#    expose:
+#      - 9094
+#    networks:
+#      - monitor-net
+#    volumes:
+#      - ./prometheus-alert/db:/app/db
+#    environment:
+#      - PA_LOGIN_USER=admin
+#      - PA_LOGIN_PASSWORD=admin
+#      - PA_TITLE=prometheusAlert
+#      - PA_OPEN_FEISHU=1
+#      - PA_OPEN_DINGDING=0
+#      - PA_OPEN_WEIXIN=0
