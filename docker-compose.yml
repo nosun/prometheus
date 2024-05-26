@@ -22,6 +22,7 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
 
   alertmanager:
     image: prom/alertmanager
@@ -36,23 +37,36 @@ services:
     volumes:
       - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
 
-#  nodeexporter:
-#    image: prom/node-exporter:v1.8.0
-#    container_name: nodeexporter-1
-#    volumes:
-#      - /proc:/host/proc:ro
-#      - /sys:/host/sys:ro
-#      - /:/rootfs:ro
-#    command:
-#      - '--path.procfs=/host/proc'
-#      - '--path.rootfs=/rootfs'
-#      - '--path.sysfs=/host/sys'
-#      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
-#    restart: unless-stopped
-#    expose:
-#      - 9100
-#    networks:
-#      - monitor-net
+  blackbox-exporter:
+    image: prom/blackbox-exporter
+    container_name: blackbox-exporter-1
+    volumes:
+      - ./blackbox-exporter:/etc/blackbox_exporter
+    command:
+      - '--config.file=/etc/blackbox_exporter/config.yml'
+    restart: unless-stopped
+    expose:
+      - 9115
+    networks:
+      - monitor-net
+
+  nodeexporter:
+    image: prom/node-exporter:v1.8.0
+    container_name: nodeexporter-1
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+    expose:
+      - 9100
+    networks:
+      - monitor-net
 
 #  prometheus-alert:
 #    image: feiyu563/prometheus-alert:latest
